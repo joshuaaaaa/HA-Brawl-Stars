@@ -1,0 +1,23 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Brawl Stars",
+        "description": "Set up Brawl Stars integration. Get your API key at https://developer.brawlstars.com",
+        "data": {
+          "api_key": "API Key",
+          "player_tag": "Player Tag (e.g. #2ABC123)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to Brawl Stars API",
+      "invalid_auth": "Invalid API key",
+      "invalid_tag": "Invalid player tag",
+      "unknown": "Unexpected error"
+    },
+    "abort": {
+      "already_configured": "This player is already configured"
+    }
+  }
+}

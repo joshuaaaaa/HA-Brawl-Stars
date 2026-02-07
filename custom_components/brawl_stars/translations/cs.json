@@ -1,0 +1,23 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Brawl Stars",
+        "description": "Nastavení integrace Brawl Stars. API klíč získáte na https://developer.brawlstars.com",
+        "data": {
+          "api_key": "API klíč",
+          "player_tag": "Tag hráče (např. #2ABC123)"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Nepodařilo se připojit k Brawl Stars API",
+      "invalid_auth": "Neplatný API klíč",
+      "invalid_tag": "Neplatný tag hráče",
+      "unknown": "Neočekávaná chyba"
+    },
+    "abort": {
+      "already_configured": "Tento hráč je již nakonfigurován"
+    }
+  }
+}
