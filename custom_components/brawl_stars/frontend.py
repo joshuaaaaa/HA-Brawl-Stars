@@ -13,10 +13,16 @@ from homeassistant.core import HomeAssistant
 _LOGGER = logging.getLogger(__name__)
 
 CARD_URL = "/brawl_stars/brawl-stars-card.js"
+_CARD_REGISTERED = False
 
 
 async def async_register_card(hass: HomeAssistant) -> None:
     """Register the Brawl Stars card as a Lovelace resource."""
+    global _CARD_REGISTERED
+    if _CARD_REGISTERED:
+        return
+    _CARD_REGISTERED = True
+
     # Register the local path for serving the JS file
     await hass.http.async_register_static_paths(
         [
