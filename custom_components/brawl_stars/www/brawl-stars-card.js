@@ -96,39 +96,60 @@ class BrawlStarsCard extends HTMLElement {
         }
         .header {
           background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-          padding: 20px;
-          text-align: center;
+          padding: 16px 20px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
           color: white;
         }
+        .header-left {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          min-width: 0;
+        }
+        .header-right {
+          text-align: right;
+          flex-shrink: 0;
+          margin-left: 16px;
+        }
         .player-name {
-          font-size: 1.5em;
+          font-size: 1.4em;
           font-weight: bold;
-          margin-bottom: 4px;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         .player-tag {
-          font-size: 0.85em;
+          font-size: 0.8em;
           opacity: 0.7;
         }
         .club-name {
-          font-size: 0.9em;
-          margin-top: 4px;
+          font-size: 0.85em;
+          margin-top: 2px;
           color: var(--bs-blue);
         }
         .trophy-section {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 8px;
-          margin-top: 12px;
-          font-size: 1.8em;
+          font-size: 1.6em;
           font-weight: bold;
           color: var(--bs-yellow);
+          line-height: 1.2;
         }
         .trophy-highest {
           font-size: 0.75em;
           opacity: 0.6;
           color: white;
           font-weight: normal;
+        }
+        .level-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          margin-top: 4px;
+          background: rgba(255, 255, 255, 0.1);
+          padding: 2px 10px;
+          border-radius: 10px;
+          font-size: 0.8em;
         }
         .stats-grid {
           display: grid;
@@ -194,28 +215,20 @@ class BrawlStarsCard extends HTMLElement {
           color: var(--bs-yellow);
           font-weight: 600;
         }
-        .level-badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 4px;
-          margin-top: 8px;
-          background: rgba(255, 255, 255, 0.1);
-          padding: 4px 12px;
-          border-radius: 12px;
-          font-size: 0.85em;
-        }
       </style>
 
       <ha-card>
         <div class="header">
-          <div class="player-name">${title}</div>
-          <div class="player-tag">${tag}</div>
-          <div class="club-name">🛡️ ${clubName}</div>
-          <div class="trophy-section">
-            🏆 ${trophies.toLocaleString()}
+          <div class="header-left">
+            <div class="player-name">${title}</div>
+            <div class="player-tag">${tag}</div>
+            <div class="club-name">🛡️ ${clubName}</div>
           </div>
-          <div class="trophy-highest">Best: ${highestTrophies.toLocaleString()}</div>
-          <div class="level-badge">⭐ Level ${expLevel}</div>
+          <div class="header-right">
+            <div class="trophy-section">🏆 ${trophies.toLocaleString()}</div>
+            <div class="trophy-highest">Best: ${highestTrophies.toLocaleString()}</div>
+            <div class="level-badge">⭐ Level ${expLevel}</div>
+          </div>
         </div>
 
         <div class="stats-grid">
