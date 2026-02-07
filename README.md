@@ -1,111 +1,107 @@
-# Brawl Stars Integrace pro Home Assistant
+# Brawl Stars Integration for Home Assistant
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
 
-Custom integrace pro Home Assistant, která se připojuje k [Brawl Stars API](https://developer.brawlstars.com/) a zobrazuje statistiky hráče jako senzory s vlastní Lovelace kartou na dashboardu.
+> **[Dokumentace v cestine / Czech README](README.cs.md)**
 
-## Funkce
+Custom Home Assistant integration that connects to the [Brawl Stars API](https://developer.brawlstars.com/) and provides player statistics as sensors, along with a custom Lovelace dashboard card.
 
-- **Senzory statistik hráče**: Trofeje, nejvyšší trofeje, level, výhry (3v3, solo, duo), počet brawlerů
-- **Profilový senzor**: Kompletní profil hráče se všemi daty jako atributy
-- **Custom Lovelace karta**: Karta na dashboard zobrazující statistiky hráče a top brawlery
-- **Automatická aktualizace**: Data se obnovují každých 5 minut
-- **Čeština a angličtina**: Plná podpora obou jazyků v UI
+## Features
 
-## Instalace
+- **Player Stats Sensors**: Trophies, highest trophies, experience level, victories (3v3, solo, duo), brawler count
+- **Profile Sensor**: Complete player profile with all data as attributes
+- **Custom Lovelace Card**: Dashboard card showing player stats and top brawlers
+- **Auto-updating**: Data refreshes every 5 minutes
+- **Multi-player support**: Add multiple players, each with their own sensors and card
+- **Czech & English translations**: Full UI support in both languages
 
-### HACS (doporučeno)
+## Installation
 
-1. Otevři HACS v Home Assistantovi
-2. Klikni na tři tečky vpravo nahoře
-3. Vyber **Vlastní repozitáře** (Custom repositories)
-4. Přidej URL tohoto repozitáře: `https://github.com/joshuaaaaa/HA-Brawl-Stars`
-5. Vyber kategorii: **Integrace**
-6. Klikni **Přidat**
-7. Vyhledej "Brawl Stars" a nainstaluj
-8. Restartuj Home Assistant
+### HACS (Recommended)
 
-### Manuální instalace
+1. Open HACS in Home Assistant
+2. Click the three dots in the top right corner
+3. Select **Custom repositories**
+4. Add this repository URL: `https://github.com/joshuaaaaa/HA-Brawl-Stars`
+5. Select category: **Integration**
+6. Click **Add**
+7. Search for "Brawl Stars" and install
+8. Restart Home Assistant
 
-1. Zkopíruj složku `custom_components/brawl_stars` do adresáře `custom_components` ve tvém Home Assistantovi
-2. Restartuj Home Assistant
+### Manual Installation
 
-## Konfigurace
+1. Copy the `custom_components/brawl_stars` folder to your Home Assistant `custom_components` directory
+2. Restart Home Assistant
 
-1. Získej API klíč na [developer.brawlstars.com](https://developer.brawlstars.com/)
-   - Vytvoř si účet
-   - Vytvoř nový API klíč (přidej IP adresu tvého Home Assistant serveru do whitelistu)
-2. V Home Assistantovi jdi do **Nastavení > Zařízení a služby > Přidat integraci**
-3. Vyhledej **Brawl Stars**
-4. Zadej API klíč a tag hráče (např. `#2ABC123`)
+## Configuration
 
-## Lovelace karta
+1. Get an API key from [developer.brawlstars.com](https://developer.brawlstars.com/)
+   - Create an account
+   - Create a new API key (whitelist your Home Assistant server's IP address)
+2. In Home Assistant, go to **Settings > Devices & Services > Add Integration**
+3. Search for **Brawl Stars**
+4. Enter your API key and player tag (e.g. `#2ABC123`)
 
-### Nastavení karty (nutný manuální krok)
+## Lovelace Card
 
-Home Assistant neumí automaticky registrovat custom JS karty z integrace. Po instalaci je potřeba provést tyto kroky:
+### Card Setup (manual step required)
 
-1. **Zkopíruj soubor karty** z integrace do složky `www` v Home Assistantovi:
+Home Assistant cannot automatically register custom JS cards from an integration. After installation you need to:
+
+1. **Copy the card file** from the integration to the `www` folder in your HA config:
    ```
-   Zdrojový soubor: custom_components/brawl_stars/www/brawl-stars-card.js
-   Cílová složka:   config/www/brawl-stars-card.js
+   Source: custom_components/brawl_stars/www/brawl-stars-card.js
+   Target: config/www/brawl-stars-card.js
    ```
-2. **Přidej Lovelace resource** v Home Assistantovi:
-   - Jdi do **Nastavení > Dashboardy > tři tečky vpravo nahoře > Zdroje** (Resources)
-   - Klikni **Přidat zdroj**
+2. **Add a Lovelace resource** in Home Assistant:
+   - Go to **Settings > Dashboards > three dots top right > Resources**
+   - Click **Add Resource**
    - URL: `/local/brawl-stars-card.js`
-   - Typ: **JavaScript modul**
-3. **Vymaž cache** prohlížeče (Ctrl+F5) a obnov stránku
+   - Type: **JavaScript Module**
+3. **Clear your browser cache** (Ctrl+F5) and refresh the page
 
-### Přidání karty na dashboard
+### Adding the Card
 
-#### Přes vizuální editor
-1. Uprav svůj dashboard
-2. Klikni **Přidat kartu**
-3. Zvol **Manuální** (dole)
-4. Vlož YAML konfiguraci:
+#### Visual Editor
+1. Edit your dashboard
+2. Click **Add Card**
+3. Choose **Manual** (at the bottom)
+4. Paste the YAML configuration:
 
 ```yaml
 type: custom:brawl-stars-card
-entity: sensor.jmeno_hrace_profile
+entity: sensor.player_name_profile
 show_top_brawlers: true
 ```
 
-#### Přímo v YAML dashboardu
-```yaml
-type: custom:brawl-stars-card
-entity: sensor.jmeno_hrace_profile
-show_top_brawlers: true
-```
+### Card Options
 
-### Nastavení karty
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `entity` | string | **Required** | Profile sensor entity ID |
+| `title` | string | Player name | Custom title for the card |
+| `show_top_brawlers` | boolean | `true` | Show top 5 brawlers section |
 
-| Volba | Typ | Výchozí | Popis |
-|-------|-----|---------|-------|
-| `entity` | string | **Povinné** | ID entity profilového senzoru |
-| `title` | string | Jméno hráče | Vlastní nadpis karty |
-| `show_top_brawlers` | boolean | `true` | Zobrazit sekci top 5 brawlerů |
+## Sensors
 
-## Senzory
+The integration creates the following sensors for each configured player:
 
-Integrace vytvoří tyto senzory pro každého nakonfigurovaného hráče:
-
-| Senzor | Popis |
-|--------|-------|
-| `Trophies` | Aktuální celkové trofeje |
-| `Highest Trophies` | Nejvyšší dosažené trofeje |
-| `Experience Level` | Level hráče |
-| `3v3 Victories` | Celkové výhry v 3v3 |
-| `Solo Victories` | Celkové výhry v solo |
-| `Duo Victories` | Celkové výhry v duo |
-| `Brawlers Unlocked` | Počet odemčených brawlerů |
-| `Total Victories` | Celkové výhry napříč všemi módy |
-| `Profile` | Hlavní profilový senzor se všemi daty jako atributy |
+| Sensor | Description |
+|--------|-------------|
+| `Trophies` | Current total trophies |
+| `Highest Trophies` | All-time highest trophies |
+| `Experience Level` | Player experience level |
+| `3v3 Victories` | Total 3v3 mode wins |
+| `Solo Victories` | Total solo mode wins |
+| `Duo Victories` | Total duo mode wins |
+| `Brawlers Unlocked` | Number of unlocked brawlers |
+| `Total Victories` | Combined victories across all modes |
+| `Profile` | Main profile sensor with all data as attributes |
 
 ## Disclaimer
 
-Tento projekt není oficiální produkt společnosti Supercell a není s ní nijak spojen ani jí schválen. "Brawl Stars" je ochranná známka Supercell Oy. Veškerý herní obsah a materiály jsou majetkem příslušných vlastníků. Tento projekt využívá veřejné [Brawl Stars API](https://developer.brawlstars.com/) v souladu se [Supercell Fan Content Policy](https://supercell.com/en/fan-content-policy/).
+This project is not an official Supercell product and is not affiliated with or endorsed by Supercell. "Brawl Stars" is a trademark of Supercell Oy. All game content and materials are the property of their respective owners. This project uses the public [Brawl Stars API](https://developer.brawlstars.com/) in accordance with the [Supercell Fan Content Policy](https://supercell.com/en/fan-content-policy/).
 
-## Licence
+## License
 
 MIT
