@@ -102,6 +102,10 @@ Integrace vytvoří tyto senzory pro každého nakonfigurovaného hráče:
 | `Total Victories` | Celkové výhry napříč všemi módy |
 | `Profile` | Hlavní profilový senzor se všemi daty jako atributy |
 
+## Disclaimer
+
+Tento projekt není oficiální produkt společnosti Supercell a není s ní nijak spojen ani jí schválen. "Brawl Stars" je ochranná známka Supercell Oy. Veškerý herní obsah a materiály jsou majetkem příslušných vlastníků. Tento projekt využívá veřejné [Brawl Stars API](https://developer.brawlstars.com/) v souladu se [Supercell Fan Content Policy](https://supercell.com/en/fan-content-policy/).
+
 ## Licence
 
 MIT
