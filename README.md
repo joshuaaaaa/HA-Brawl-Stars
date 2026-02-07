@@ -6,6 +6,9 @@
 
 Custom Home Assistant integration that connects to the [Brawl Stars API](https://developer.brawlstars.com/) and provides player statistics as sensors, along with a custom Lovelace dashboard card.
 
+<img width="398" height="505" alt="image" src="https://github.com/user-attachments/assets/12f1f45c-e368-4b67-8cfe-649639dbdd8e" />
+
+
 ## Features
 
 - **Player Stats Sensors**: Trophies, highest trophies, experience level, victories (3v3, solo, duo), brawler count
@@ -105,3 +108,8 @@ This project is not an official Supercell product and is not affiliated with or 
 ## License
 
 MIT
+
+## http://buymeacoffee.com/jakubhruby
+
+
+<img width="150" height="150" alt="qr-code" src="https://github.com/user-attachments/assets/2581bf36-7f7d-4745-b792-d1abaca6e57d" />
