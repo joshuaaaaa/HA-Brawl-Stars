@@ -96,49 +96,39 @@ class BrawlStarsCard extends HTMLElement {
         }
         .header {
           background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-          padding: 10px 16px;
-          display: flex;
-          align-items: center;
-          gap: 12px;
+          padding: 20px;
+          text-align: center;
           color: white;
         }
-        .header-info {
-          flex: 1;
-          min-width: 0;
-        }
-        .header-trophies {
-          text-align: right;
-          flex-shrink: 0;
-        }
         .player-name {
-          font-size: 1.15em;
-          font-weight: bold;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        .player-sub {
-          font-size: 0.75em;
-          opacity: 0.7;
-          margin-top: 2px;
-        }
-        .club-name {
-          font-size: 0.8em;
-          color: var(--bs-blue);
-          margin-top: 2px;
-        }
-        .trophy-section {
           font-size: 1.5em;
           font-weight: bold;
+          margin-bottom: 4px;
+        }
+        .player-tag {
+          font-size: 0.85em;
+          opacity: 0.7;
+        }
+        .club-name {
+          font-size: 0.9em;
+          margin-top: 4px;
+          color: var(--bs-blue);
+        }
+        .trophy-section {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 8px;
+          margin-top: 12px;
+          font-size: 1.8em;
+          font-weight: bold;
           color: var(--bs-yellow);
-          line-height: 1;
         }
         .trophy-highest {
-          font-size: 0.65em;
+          font-size: 0.75em;
           opacity: 0.6;
           color: white;
           font-weight: normal;
-          margin-top: 2px;
         }
         .stats-grid {
           display: grid;
@@ -149,35 +139,35 @@ class BrawlStarsCard extends HTMLElement {
         }
         .stat-item {
           background: var(--card-background-color, #1e1e1e);
-          padding: 8px 6px;
+          padding: 12px 8px;
           text-align: center;
         }
         .stat-value {
-          font-size: 1.05em;
+          font-size: 1.2em;
           font-weight: bold;
           color: var(--primary-text-color, #fff);
         }
         .stat-label {
-          font-size: 0.65em;
+          font-size: 0.7em;
           color: var(--secondary-text-color, #aaa);
           text-transform: uppercase;
-          margin-top: 2px;
+          margin-top: 4px;
         }
         .section-title {
-          padding: 8px 16px 2px;
-          font-size: 0.75em;
+          padding: 12px 16px 4px;
+          font-size: 0.85em;
           font-weight: bold;
           text-transform: uppercase;
           color: var(--secondary-text-color, #aaa);
         }
         .brawlers-list {
-          padding: 2px 16px 8px;
+          padding: 4px 16px 16px;
         }
         .brawler-item {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 5px 0;
+          padding: 8px 0;
           border-bottom: 1px solid var(--divider-color, #333);
         }
         .brawler-item:last-child {
@@ -204,22 +194,28 @@ class BrawlStarsCard extends HTMLElement {
           color: var(--bs-yellow);
           font-weight: 600;
         }
-        .brawler-details {
-          font-size: 0.8em;
+        .level-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          margin-top: 8px;
+          background: rgba(255, 255, 255, 0.1);
+          padding: 4px 12px;
+          border-radius: 12px;
+          font-size: 0.85em;
         }
       </style>
 
       <ha-card>
         <div class="header">
-          <div class="header-info">
-            <div class="player-name">${title}</div>
-            <div class="player-sub">${tag} · Lv.${expLevel}</div>
-            <div class="club-name">🛡️ ${clubName}</div>
+          <div class="player-name">${title}</div>
+          <div class="player-tag">${tag}</div>
+          <div class="club-name">🛡️ ${clubName}</div>
+          <div class="trophy-section">
+            🏆 ${trophies.toLocaleString()}
           </div>
-          <div class="header-trophies">
-            <div class="trophy-section">🏆 ${trophies.toLocaleString()}</div>
-            <div class="trophy-highest">Best: ${highestTrophies.toLocaleString()}</div>
-          </div>
+          <div class="trophy-highest">Best: ${highestTrophies.toLocaleString()}</div>
+          <div class="level-badge">⭐ Level ${expLevel}</div>
         </div>
 
         <div class="stats-grid">
@@ -242,6 +238,10 @@ class BrawlStarsCard extends HTMLElement {
           <div class="stat-item">
             <div class="stat-value">${brawlerCount}</div>
             <div class="stat-label">Brawlers</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">${expLevel}</div>
+            <div class="stat-label">Level</div>
           </div>
         </div>
 
