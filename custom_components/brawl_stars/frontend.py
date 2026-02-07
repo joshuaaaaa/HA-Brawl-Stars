@@ -4,7 +4,7 @@ from __future__ import annotations
 import logging
 from pathlib import Path
 
-from homeassistant.components.frontend import async_register_built_in_panel
+from homeassistant.components.http import StaticPathConfig
 from homeassistant.components.lovelace.resources import (
     ResourceStorageCollection,
 )
@@ -18,10 +18,14 @@ CARD_URL = "/brawl_stars/brawl-stars-card.js"
 async def async_register_card(hass: HomeAssistant) -> None:
     """Register the Brawl Stars card as a Lovelace resource."""
     # Register the local path for serving the JS file
-    hass.http.register_static_path(
-        CARD_URL,
-        str(Path(__file__).parent / "www" / "brawl-stars-card.js"),
-        cache_headers=False,
+    await hass.http.async_register_static_paths(
+        [
+            StaticPathConfig(
+                url_path=CARD_URL,
+                path=str(Path(__file__).parent / "www" / "brawl-stars-card.js"),
+                cache_headers=False,
+            )
+        ]
     )
     _LOGGER.debug("Registered Brawl Stars card at %s", CARD_URL)
 
