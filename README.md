@@ -1,91 +1,107 @@
-# Brawl Stars Integration for Home Assistant
+# Brawl Stars Integrace pro Home Assistant
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
 
-Custom Home Assistant integration that connects to the [Brawl Stars API](https://developer.brawlstars.com/) and provides player statistics as sensors, along with a custom Lovelace dashboard card.
+Custom integrace pro Home Assistant, která se připojuje k [Brawl Stars API](https://developer.brawlstars.com/) a zobrazuje statistiky hráče jako senzory s vlastní Lovelace kartou na dashboardu.
 
-## Features
+## Funkce
 
-- **Player Stats Sensors**: Trophies, highest trophies, experience level, victories (3v3, solo, duo), brawler count
-- **Profile Sensor**: Complete player profile with all data as attributes
-- **Custom Lovelace Card**: Beautiful dashboard card showing player stats and top brawlers
-- **Auto-updating**: Data refreshes every 5 minutes
-- **Czech & English translations**: Full UI support in both languages
+- **Senzory statistik hráče**: Trofeje, nejvyšší trofeje, level, výhry (3v3, solo, duo), počet brawlerů
+- **Profilový senzor**: Kompletní profil hráče se všemi daty jako atributy
+- **Custom Lovelace karta**: Karta na dashboard zobrazující statistiky hráče a top brawlery
+- **Automatická aktualizace**: Data se obnovují každých 5 minut
+- **Čeština a angličtina**: Plná podpora obou jazyků v UI
 
-## Installation
+## Instalace
 
-### HACS (Recommended)
+### HACS (doporučeno)
 
-1. Open HACS in Home Assistant
-2. Click the three dots in the top right corner
-3. Select **Custom repositories**
-4. Add this repository URL: `https://github.com/joshuaaaaa/HA-Brawl-Stars`
-5. Select category: **Integration**
-6. Click **Add**
-7. Search for "Brawl Stars" and install
-8. Restart Home Assistant
+1. Otevři HACS v Home Assistantovi
+2. Klikni na tři tečky vpravo nahoře
+3. Vyber **Vlastní repozitáře** (Custom repositories)
+4. Přidej URL tohoto repozitáře: `https://github.com/joshuaaaaa/HA-Brawl-Stars`
+5. Vyber kategorii: **Integrace**
+6. Klikni **Přidat**
+7. Vyhledej "Brawl Stars" a nainstaluj
+8. Restartuj Home Assistant
 
-### Manual Installation
+### Manuální instalace
 
-1. Copy the `custom_components/brawl_stars` folder to your Home Assistant `custom_components` directory
-2. Restart Home Assistant
+1. Zkopíruj složku `custom_components/brawl_stars` do adresáře `custom_components` ve tvém Home Assistantovi
+2. Restartuj Home Assistant
 
-## Configuration
+## Konfigurace
 
-1. Get an API key from [developer.brawlstars.com](https://developer.brawlstars.com/)
-   - Create an account
-   - Create a new API key (whitelist your Home Assistant server's IP)
-2. In Home Assistant, go to **Settings > Devices & Services > Add Integration**
-3. Search for **Brawl Stars**
-4. Enter your API key and player tag (e.g., `#2ABC123`)
+1. Získej API klíč na [developer.brawlstars.com](https://developer.brawlstars.com/)
+   - Vytvoř si účet
+   - Vytvoř nový API klíč (přidej IP adresu tvého Home Assistant serveru do whitelistu)
+2. V Home Assistantovi jdi do **Nastavení > Zařízení a služby > Přidat integraci**
+3. Vyhledej **Brawl Stars**
+4. Zadej API klíč a tag hráče (např. `#2ABC123`)
 
-## Lovelace Card
+## Lovelace karta
 
-After installation, the custom card is available in your Lovelace dashboard.
+### Nastavení karty (nutný manuální krok)
 
-### Adding the Card
+Home Assistant neumí automaticky registrovat custom JS karty z integrace. Po instalaci je potřeba provést tyto kroky:
 
-#### Option 1: Visual Editor
-1. Edit your dashboard
-2. Click **Add Card**
-3. Search for **Brawl Stars Card**
-4. Select your profile sensor entity
+1. **Zkopíruj soubor karty** z integrace do složky `www` v Home Assistantovi:
+   ```
+   Zdrojový soubor: custom_components/brawl_stars/www/brawl-stars-card.js
+   Cílová složka:   config/www/brawl-stars-card.js
+   ```
+2. **Přidej Lovelace resource** v Home Assistantovi:
+   - Jdi do **Nastavení > Dashboardy > tři tečky vpravo nahoře > Zdroje** (Resources)
+   - Klikni **Přidat zdroj**
+   - URL: `/local/brawl-stars-card.js`
+   - Typ: **JavaScript modul**
+3. **Vymaž cache** prohlížeče (Ctrl+F5) a obnov stránku
 
-#### Option 2: YAML
+### Přidání karty na dashboard
+
+#### Přes vizuální editor
+1. Uprav svůj dashboard
+2. Klikni **Přidat kartu**
+3. Zvol **Manuální** (dole)
+4. Vlož YAML konfiguraci:
+
 ```yaml
 type: custom:brawl-stars-card
-entity: sensor.player_name_profile
+entity: sensor.jmeno_hrace_profile
 show_top_brawlers: true
 ```
 
-If the card is not auto-registered, add it manually as a Lovelace resource:
-- URL: `/brawl_stars/brawl-stars-card.js`
-- Type: JavaScript Module
+#### Přímo v YAML dashboardu
+```yaml
+type: custom:brawl-stars-card
+entity: sensor.jmeno_hrace_profile
+show_top_brawlers: true
+```
 
-### Card Options
+### Nastavení karty
 
-| Option | Type | Default | Description |
-|--------|------|---------|-------------|
-| `entity` | string | **Required** | Profile sensor entity ID |
-| `title` | string | Player name | Custom title for the card |
-| `show_top_brawlers` | boolean | `true` | Show top 5 brawlers section |
+| Volba | Typ | Výchozí | Popis |
+|-------|-----|---------|-------|
+| `entity` | string | **Povinné** | ID entity profilového senzoru |
+| `title` | string | Jméno hráče | Vlastní nadpis karty |
+| `show_top_brawlers` | boolean | `true` | Zobrazit sekci top 5 brawlerů |
 
-## Sensors
+## Senzory
 
-The integration creates the following sensors for each configured player:
+Integrace vytvoří tyto senzory pro každého nakonfigurovaného hráče:
 
-| Sensor | Description |
-|--------|-------------|
-| `Trophies` | Current total trophies |
-| `Highest Trophies` | All-time highest trophies |
-| `Experience Level` | Player experience level |
-| `3v3 Victories` | Total 3v3 mode wins |
-| `Solo Victories` | Total solo mode wins |
-| `Duo Victories` | Total duo mode wins |
-| `Brawlers Unlocked` | Number of unlocked brawlers |
-| `Total Victories` | Combined victories across all modes |
-| `Profile` | Main profile sensor with all data as attributes |
+| Senzor | Popis |
+|--------|-------|
+| `Trophies` | Aktuální celkové trofeje |
+| `Highest Trophies` | Nejvyšší dosažené trofeje |
+| `Experience Level` | Level hráče |
+| `3v3 Victories` | Celkové výhry v 3v3 |
+| `Solo Victories` | Celkové výhry v solo |
+| `Duo Victories` | Celkové výhry v duo |
+| `Brawlers Unlocked` | Počet odemčených brawlerů |
+| `Total Victories` | Celkové výhry napříč všemi módy |
+| `Profile` | Hlavní profilový senzor se všemi daty jako atributy |
 
-## License
+## Licence
 
 MIT
