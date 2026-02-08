@@ -14,6 +14,7 @@ Custom Home Assistant integration that connects to the [Brawl Stars API](https:/
 - **Player Stats Sensors**: Trophies, highest trophies, experience level, victories (3v3, solo, duo), brawler count
 - **Profile Sensor**: Complete player profile with all data as attributes
 - **Custom Lovelace Card**: Dashboard card showing player stats and top brawlers
+- **Event Rotation Card**: Separate card showing current active events/maps
 - **Auto-updating**: Data refreshes every 5 minutes
 - **Multi-player support**: Add multiple players, each with their own sensors and card
 - **Czech & English translations**: Full UI support in both languages
@@ -51,16 +52,16 @@ Custom Home Assistant integration that connects to the [Brawl Stars API](https:/
 
 Home Assistant cannot automatically register custom JS cards from an integration. After installation you need to:
 
-1. **Copy the card file** from the integration to the `www` folder in your HA config:
+1. **Copy the card files** from the integration to the `www` folder in your HA config:
    ```
-   Source: custom_components/brawl_stars/www/brawl-stars-card.js
-   Target: config/www/brawl-stars-card.js
+   custom_components/brawl_stars/www/brawl-stars-card.js        → config/www/brawl-stars-card.js
+   custom_components/brawl_stars/www/brawl-stars-events-card.js  → config/www/brawl-stars-events-card.js
    ```
-2. **Add a Lovelace resource** in Home Assistant:
+2. **Add Lovelace resources** in Home Assistant:
    - Go to **Settings > Dashboards > three dots top right > Resources**
-   - Click **Add Resource**
-   - URL: `/local/brawl-stars-card.js`
-   - Type: **JavaScript Module**
+   - Click **Add Resource** and add both:
+     - URL: `/local/brawl-stars-card.js` — Type: **JavaScript Module**
+     - URL: `/local/brawl-stars-events-card.js` — Type: **JavaScript Module**
 3. **Clear your browser cache** (Ctrl+F5) and refresh the page
 
 ### Adding the Card
@@ -85,6 +86,20 @@ show_top_brawlers: true
 | `title` | string | Player name | Custom title for the card |
 | `show_top_brawlers` | boolean | `true` | Show top 5 brawlers section |
 
+### Event Rotation Card
+
+Displays current active events with game mode, map name and end time.
+
+```yaml
+type: custom:brawl-stars-events-card
+entity: sensor.player_name_event_rotation
+```
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `entity` | string | **Required** | Event Rotation sensor entity ID |
+| `title` | string | `Event Rotation` | Custom title for the card |
+
 ## Sensors
 
 The integration creates the following sensors for each configured player:
@@ -100,6 +115,7 @@ The integration creates the following sensors for each configured player:
 | `Brawlers Unlocked` | Number of unlocked brawlers |
 | `Total Victories` | Combined victories across all modes |
 | `Profile` | Main profile sensor with all data as attributes |
+| `Event Rotation` | Current active events with mode, map and times |
 
 ## Disclaimer
 

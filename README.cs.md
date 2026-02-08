@@ -9,6 +9,7 @@ Custom integrace pro Home Assistant, která se připojuje k [Brawl Stars API](ht
 - **Senzory statistik hráče**: Trofeje, nejvyšší trofeje, level, výhry (3v3, solo, duo), počet brawlerů
 - **Profilový senzor**: Kompletní profil hráče se všemi daty jako atributy
 - **Custom Lovelace karta**: Karta na dashboard zobrazující statistiky hráče a top brawlery
+- **Karta rotace eventů**: Samostatná karta zobrazující aktuální eventy/mapy
 - **Automatická aktualizace**: Data se obnovují každých 5 minut
 - **Čeština a angličtina**: Plná podpora obou jazyků v UI
 
@@ -45,16 +46,16 @@ Custom integrace pro Home Assistant, která se připojuje k [Brawl Stars API](ht
 
 Home Assistant neumí automaticky registrovat custom JS karty z integrace. Po instalaci je potřeba provést tyto kroky:
 
-1. **Zkopíruj soubor karty** z integrace do složky `www` v Home Assistantovi:
+1. **Zkopíruj soubory karet** z integrace do složky `www` v Home Assistantovi:
    ```
-   Zdrojový soubor: custom_components/brawl_stars/www/brawl-stars-card.js
-   Cílová složka:   config/www/brawl-stars-card.js
+   custom_components/brawl_stars/www/brawl-stars-card.js        → config/www/brawl-stars-card.js
+   custom_components/brawl_stars/www/brawl-stars-events-card.js  → config/www/brawl-stars-events-card.js
    ```
-2. **Přidej Lovelace resource** v Home Assistantovi:
+2. **Přidej Lovelace resources** v Home Assistantovi:
    - Jdi do **Nastavení > Dashboardy > tři tečky vpravo nahoře > Zdroje** (Resources)
-   - Klikni **Přidat zdroj**
-   - URL: `/local/brawl-stars-card.js`
-   - Typ: **JavaScript modul**
+   - Klikni **Přidat zdroj** a přidej oba:
+     - URL: `/local/brawl-stars-card.js` — Typ: **JavaScript modul**
+     - URL: `/local/brawl-stars-events-card.js` — Typ: **JavaScript modul**
 3. **Vymaž cache** prohlížeče (Ctrl+F5) a obnov stránku
 
 ### Přidání karty na dashboard
@@ -86,6 +87,20 @@ show_top_brawlers: true
 | `title` | string | Jméno hráče | Vlastní nadpis karty |
 | `show_top_brawlers` | boolean | `true` | Zobrazit sekci top 5 brawlerů |
 
+### Karta rotace eventů
+
+Zobrazuje aktuální aktivní eventy s herním módem, názvem mapy a časem konce.
+
+```yaml
+type: custom:brawl-stars-events-card
+entity: sensor.jmeno_hrace_event_rotation
+```
+
+| Volba | Typ | Výchozí | Popis |
+|-------|-----|---------|-------|
+| `entity` | string | **Povinné** | ID entity senzoru Event Rotation |
+| `title` | string | `Event Rotation` | Vlastní nadpis karty |
+
 ## Senzory
 
 Integrace vytvoří tyto senzory pro každého nakonfigurovaného hráče:
@@ -101,6 +116,7 @@ Integrace vytvoří tyto senzory pro každého nakonfigurovaného hráče:
 | `Brawlers Unlocked` | Počet odemčených brawlerů |
 | `Total Victories` | Celkové výhry napříč všemi módy |
 | `Profile` | Hlavní profilový senzor se všemi daty jako atributy |
+| `Event Rotation` | Aktuální aktivní eventy s módem, mapou a časy |
 
 ## Disclaimer
 
