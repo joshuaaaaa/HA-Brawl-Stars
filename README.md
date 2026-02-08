@@ -1,12 +1,13 @@
 # Brawl Stars Integration for Home Assistant
 
-[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
+[![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration) 
 
 > **[Dokumentace v cestine / Czech README](README.cs.md)**
 
 Custom Home Assistant integration that connects to the [Brawl Stars API](https://developer.brawlstars.com/) and provides player statistics as sensors, along with a custom Lovelace dashboard card.
 
-<img width="398" height="505" alt="image" src="https://github.com/user-attachments/assets/12f1f45c-e368-4b67-8cfe-649639dbdd8e" />
+<img width="398" height="505" alt="image" src="https://github.com/user-attachments/assets/12f1f45c-e368-4b67-8cfe-649639dbdd8e" /> <img width="432" height="497" alt="image" src="https://github.com/user-attachments/assets/6b44da62-d7ba-4f27-900d-69402ed359e9" />
+
 
 
 ## Features
