@@ -85,6 +85,9 @@ async def async_setup_entry(
     # Add the main profile sensor with all attributes
     entities.append(BrawlStarsProfileSensor(coordinator, entry))
 
+    # Add event rotation sensor
+    entities.append(BrawlStarsEventRotationSensor(coordinator, entry))
+
     async_add_entities(entities)
 
 
@@ -154,3 +157,41 @@ class BrawlStarsProfileSensor(CoordinatorEntity, SensorEntity):
         if self.coordinator.data:
             return self.coordinator.data
         return {}
+
+
+class BrawlStarsEventRotationSensor(CoordinatorEntity, SensorEntity):
+    """Sensor showing current event rotation."""
+
+    def __init__(
+        self,
+        coordinator: BrawlStarsDataCoordinator,
+        entry: ConfigEntry,
+    ) -> None:
+        """Initialize the event rotation sensor."""
+        super().__init__(coordinator)
+        self._attr_unique_id = f"{entry.entry_id}_event_rotation"
+        self._attr_icon = "mdi:calendar-star"
+
+    @property
+    def name(self) -> str:
+        """Return the name of the sensor."""
+        player_name = "Brawl Stars"
+        if self.coordinator.data:
+            player_name = self.coordinator.data.get("name", "Brawl Stars")
+        return f"{player_name} Event Rotation"
+
+    @property
+    def native_value(self):
+        """Return the number of active events."""
+        if self.coordinator.data:
+            events = self.coordinator.data.get("events", [])
+            return len(events)
+        return 0
+
+    @property
+    def extra_state_attributes(self) -> dict:
+        """Return event rotation data as attributes."""
+        if self.coordinator.data:
+            events = self.coordinator.data.get("events", [])
+            return {"events": events}
+        return {"events": []}

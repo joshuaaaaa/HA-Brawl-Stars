@@ -68,7 +68,39 @@ class BrawlStarsDataCoordinator(DataUpdateCoordinator):
         except aiohttp.ClientError as err:
             raise UpdateFailed(f"Error communicating with API: {err}") from err
 
-        return self._parse_player_data(data)
+        # Fetch event rotation in parallel
+        events_url = f"{API_BASE_URL}/events/rotation"
+        events = []
+        try:
+            session2 = aiohttp.ClientSession()
+            try:
+                async with session2.get(events_url, headers=headers) as resp:
+                    if resp.status == 200:
+                        events = await resp.json()
+            finally:
+                await session2.close()
+        except aiohttp.ClientError:
+            _LOGGER.warning("Failed to fetch event rotation")
+
+        result = self._parse_player_data(data)
+        result["events"] = self._parse_events(events)
+        return result
+
+    def _parse_events(self, events: list) -> list:
+        """Parse event rotation data."""
+        parsed = []
+        for event in events:
+            ev = event.get("event", {})
+            parsed.append(
+                {
+                    "mode": ev.get("mode", "unknown"),
+                    "map": ev.get("map", "Unknown"),
+                    "start_time": event.get("startTime", ""),
+                    "end_time": event.get("endTime", ""),
+                    "slot_id": event.get("slotId", 0),
+                }
+            )
+        return parsed
 
     def _parse_player_data(self, data: dict) -> dict:
         """Parse raw API response into structured data."""
